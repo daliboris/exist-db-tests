@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<TEI n="cb" xmlns="http://www.tei-c.org/ns/1.0">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>Damen Conversations Lexikon</title>
+            <author>Herausgegeben von Carl Herloßsohn</author>
+         </titleStmt>
+         <publicationStmt>
+            <publisher />
+            <date>1834-1838</date>
+            <availability>
+               <licence target="https://creativecommons.org/licenses/by/4.0/legalcode">Creative Commons Attribution 4.0 International</licence>
+            </availability>
+         </publicationStmt>
+         <sourceDesc>
+            <bibl>
+               <title>Damen Conversations Lexikon, Band 1. Leipzig 1834</title>
+               <figure>
+                  <graphic url="../Bilder/DamenConvLex-1834/Images/damenconvle-001-0000.png" />
+               </figure>
+               <title>Damen Conversations Lexikon, Band 2. Leipzig 1834</title>
+               <figure>
+                  <graphic url="../Bilder/DamenConvLex-1834/Images/damenconvle-002-0000.png" />
+               </figure>
+               <title>Damen Conversations Lexikon, Band 3. [o.O.] 1835</title>
+               <figure>
+                  <graphic url="../Bilder/DamenConvLex-1834/Images/damenconvle-003-0000.png" />
+               </figure>
+               <title>Damen Conversations Lexikon, Band 4. [o.O.] 1835</title>
+               <figure>
+                  <graphic url="../Bilder/DamenConvLex-1834/Images/damenconvle-004-0000.png" />
+               </figure>
+               <title>Damen Conversations Lexikon, Band 5. [o.O.] 1835</title>
+               <figure>
+                  <graphic url="../Bilder/DamenConvLex-1834/Images/damenconvle-005-0000.png" />
+               </figure>
+               <title>Damen Conversations Lexikon, Band 6. [o.O.] 1836</title>
+               <figure>
+                  <graphic url="../Bilder/DamenConvLex-1834/Images/damenconvle-006-0000.png" />
+               </figure>
+               <title>Damen Conversations Lexikon, Band 7. [o.O.] 1836</title>
+               <figure>
+                  <graphic url="../Bilder/DamenConvLex-1834/Images/damenconvle-007-0000.png" />
+               </figure>
+               <title>Damen Conversations Lexikon, Band 8. [o.O.] 1837</title>
+               <figure>
+                  <graphic url="../Bilder/DamenConvLex-1834/Images/damenconvle-008-0000.png" />
+               </figure>
+               <title>Damen Conversations Lexikon, Band 9. [o.O.] 1837</title>
+               <figure>
+                  <graphic url="../Bilder/DamenConvLex-1834/Images/damenconvle-009-0000.png" />
+               </figure>
+               <title>Damen Conversations Lexikon, Band 10. [o.O.] 1838</title>
+               <figure>
+                  <graphic url="../Bilder/DamenConvLex-1834/Images/damenconvle-010-0000.png" />
+               </figure>
+            </bibl>
+            <bibl type="electronic">
+               <title>Twenty-two Historical Encyclopedias Encoded in TEI: a New Resource for the Digital Humanities</title>
+               <author>Hagen, Thora</author>
+               <author>Ketzan, Erik</author>
+               <author>Jannidis, Fotis</author>
+               <author>Witt, Andreas</author>
+               <idno type="URI">https://zenodo.org/record/4554112</idno>
+            </bibl>
+         </sourceDesc>
+      </fileDesc>
+      <profileDesc>
+         <abstract>
+            <ab>This example is used to demonstrate browsing a compound resource consisting of many, small entries: rather than showing the entire encyclopedia by division or page, we want to search for and present single headwords. The main pb-view uses a <ref target="doc/documentation.xml#alignment">mapping function</ref> to select the entry corresponding to the headword. A client-side <ref target="https://cdn.tei-publisher.com/@2.9.0/dist/api.html#pb-page.0">url template</ref> defines how the
+               headword is encoded in the URL, which has the structure <code>/encyclopedia/{headword}</code>. A corresponding server-side endpoint is defined as well, so we get dynamic, but still bookmarkable URLs. </ab>
+         </abstract>
+         <langUsage>
+            <language ident="de">German</language>
+         </langUsage>
+         <textClass>
+            <catRef scheme="#genre" target="#correspondence" />
+            <keywords scheme="http://authorities.loc.gov/">
+               <term>Proverbs.</term>
+            </keywords>
+         </textClass>
+      </profileDesc>
+   </teiHeader>
+   <text>
+      <body>
+         <div>
+            <div type="A">
+               <entry xml:id="d3e702DamenConvLex-1834" xml:lang="de">
+                  <form type="lemma">
+                     <orth>A</orth>
+                  </form>
+               </entry>
+               <entry xml:id="d3e720DamenConvLex-1834" xml:lang="de">
+                  <form type="lemma">
+                     <orth>Aachen</orth>
+                  </form>
+               </entry>
+               <entry xml:id="d3e734DamenConvLex-1834" xml:lang="de">
+                  <form type="lemma">
+                     <orth>Aachner Bäder</orth>
+                  </form>
+               </entry>
+               <entry xml:id="d3e749DamenConvLex-1834" xml:lang="de">
+                  <form type="lemma">
+                     <orth>Aal</orth>
+                  </form>
+               </entry>
+               <entry xml:id="d3e766DamenConvLex-1834" xml:lang="de">
+                  <form type="lemma">
+                     <orth>Aar</orth>
+                  </form>
+               </entry>
+               <entry xml:id="d3e781DamenConvLex-1834" xml:lang="de">
+                  <form type="lemma">
+                     <orth>Aaron</orth>
+                  </form>
+               </entry>
+               <entry xml:id="d3e796DamenConvLex-1834" xml:lang="de">
+                  <form type="lemma">
+                     <orth>Abaillard und Heloise</orth>
+                  </form>
+               </entry>
+               <entry xml:id="d3e843DamenConvLex-1834" xml:lang="de">
+                  <form type="lemma">
+                     <orth>Abbacken</orth>
+                  </form>
+               </entry>
+               <entry xml:id="d3e860DamenConvLex-1834" xml:lang="de">
+                  <form type="lemma">
+                     <orth>Abbadon (Mythologie)</orth>
+                  </form>
+               </entry>
+               <entry xml:id="d3e887DamenConvLex-1834" xml:lang="de">
+                  <form type="lemma">
+                     <orth>Abbé</orth>
+                  </form>
+               </entry>
+            </div>
+         </div>
+      </body>
+      <back />
+   </text>
+</TEI>
