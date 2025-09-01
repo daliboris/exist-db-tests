@@ -1,0 +1,14 @@
+{
+    "connectionOptions": {
+        "basic_auth": {
+            "user": "admin",
+            "pass": ""
+        },
+        "rejectUnauthorized": false,
+        "host": "localhost",
+        "port": 7721,
+        "secure": true
+    },
+    "extensionsort": true,
+    "color": true
+}

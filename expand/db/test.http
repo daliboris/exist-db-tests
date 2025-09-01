@@ -1,0 +1,134 @@
+@testUrl = https://localhost:8443/exist/apps/test-expand/test.xq
+
+GET {{testUrl}}
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Abbacken
+    &per-page=1
+    &start-page=1
+    &items=0
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &per-page=1
+    &start-page=1
+    &items=1
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Abbacken
+    &per-page=1
+    &start-page=1
+    &items=0
+    &expand=true
+
+###
+
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Abba??*n*
+    &per-page=2
+    &start-page=1
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &per-page=5
+    &start-page=1
+    &items=2
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Aa*
+    &per-page=1
+    &start-page=1
+    &expand=true
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Aa*
+    &per-page=10
+    &start-page=1
+    &expand=true
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Aa*
+    &per-page=1
+    &start-page=1
+    &expand=false
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Aa*
+    &per-page=10
+    &start-page=1
+    &expand=false
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Aa*
+    &per-page=10
+    &start-page=1
+    &expand=false
+    &collection=10000
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Aa*
+    &per-page=10
+    &start-page=1
+    &expand=true
+    &collection=10000
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Aa*
+    &per-page=10
+    &start-page=1
+    &expand=false
+    &collection=100000
+
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Aa*
+    &per-page=10
+    &start-page=1
+    &expand=true
+    &collection=100000
+
+###
+
+GET {{testUrl}}
+    ?field=lemma
+    &query=Abba??*n*
+    &per-page=10
+    &start-page=1
+    &expand=false
+    &collection=100000

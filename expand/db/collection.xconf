@@ -1,0 +1,14 @@
+<collection xmlns="http://exist-db.org/collection-config/1.0">
+  <index xmlns:tei="http://www.tei-c.org/ns/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:dbk="http://docbook.org/ns/docbook">
+    <fulltext default="none" attributes="false"/>
+    <lucene>
+      <analyzer class="org.apache.lucene.analysis.standard.StandardAnalyzer">
+        <param name="stopwords" type="org.apache.lucene.analysis.util.CharArraySet"><value /></param>
+      </analyzer>
+      <text qname="tei:entry">
+        <field name="text" expression="normalize-space()" />
+        <field name="lemma" expression=".//tei:form[@type=('lemma', 'variant')]/tei:orth/(., tei:orth/@expand)"/>
+      </text>
+    </lucene>
+  </index>
+</collection>
