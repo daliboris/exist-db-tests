@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="https://www.daliboris.cz/ns/exist-db/xquery/search#query" xmlns:q="https://www.daliboris.cz/ns/exist-db/xquery/search#query" xmlns:d="https://www.daliboris.cz/ns/exist-db/xquery/data">
+ <xs:import schemaLocation="query-options.xsd"/>
+ <xs:import schemaLocation="data.xsd" namespace="https://www.daliboris.cz/ns/exist-db/xquery/data"/>
+ <xs:element name="query" type="q:ctQuerying"/>
+ <xs:complexType name="ctQuerying">
+  <xs:sequence>
+   <xs:choice>
+    <xs:element name="fulltext" type="q:ctFulltext" minOccurs="1"/>
+    <xs:element name="ngram" type="q:ctNgram" minOccurs="1"/>
+   </xs:choice>
+   <xs:element name="facets" type="q:ctFacets" minOccurs="0"/>
+   <xs:element name="fields" type="q:ctFields" minOccurs="0"/>
+   <xs:element name="sorting" type="q:ctSorting" minOccurs="0"/>
+   <xs:element name="pagination" type="q:ctPagination" minOccurs="1"/>
+   <xs:element name="rendition" type="q:ctRendition" minOccurs="1"/>
+  </xs:sequence>
+  <xs:attribute name="format"/>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctFulltext">
+  <xs:complexContent>
+   <xs:extension base="q:hashLike">
+    <xs:sequence>
+     <xs:element ref="query"/>
+     <xs:element ref="options"/>
+    </xs:sequence>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctNgram">
+  <xs:complexContent>
+   <xs:extension base="q:hashLike">
+    <xs:sequence maxOccurs="unbounded">
+     <xs:element name="query" type="xs:string"/>
+     <xs:element name="function" type="q:ctNGramFunction"/>
+    </xs:sequence>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctFacets">
+  <xs:complexContent>
+   <xs:extension base="q:hashLike">
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+     <xs:element name="facet" type="q:ctFacet"/>
+    </xs:sequence>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="hashLike">
+  <xs:attribute name="hash" type="xs:string" use="required"/>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctFacet">
+  <xs:sequence maxOccurs="unbounded">
+   <xs:element name="value" type="q:ctAbstractValue"/>
+  </xs:sequence>
+  <xs:attribute name="name" type="xs:token" use="required"/>
+  <xs:attribute name="type" type="d:stParameterType"/>
+  <xs:attribute name="has-hierarchy" type="xs:boolean"/>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctAbstractValue" abstract="true">
+  <xs:attribute name="text" type="xs:string"/>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="simple">
+  <xs:complexContent mixed="true">
+   <xs:extension base="q:ctAbstractValue"/>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="hierarchical">
+  <xs:complexContent>
+   <xs:extension base="q:ctAbstractValue">
+    <xs:sequence>
+     <xs:element name="value" type="q:ctAbstractValue"/>
+    </xs:sequence>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctFields">
+  <xs:complexContent>
+   <xs:extension base="q:hashLike">
+    <xs:sequence>
+     <xs:element name="field" type="q:ctField"/>
+    </xs:sequence>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctField">
+  <xs:attribute name="name" type="xs:token"/>
+  <xs:attribute name="type" type="d:stParameterType"/>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctSortdField">
+  <xs:complexContent>
+   <xs:extension base="q:ctField">
+    <xs:attribute name="order" type="q:stSortOrder"/>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctPagination">
+  <xs:complexContent>
+   <xs:extension base="q:hashLike">
+    <xs:sequence>
+     <xs:element name="start-page" type="q:ctPage"/>
+     <xs:element name="per-page" type="q:ctPage"/>
+    </xs:sequence>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctPage">
+  <xs:simpleContent>
+   <xs:extension base="q:stPage"/>
+  </xs:simpleContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:simpleType name="stPage">
+  <xs:restriction base="xs:integer">
+   <xs:minInclusive value="1"/>
+  </xs:restriction>
+ </xs:simpleType>
+ <!--  -->
+ <xs:complexType name="ctSorting">
+  <xs:complexContent>
+   <xs:extension base="q:hashLike">
+    <xs:sequence minOccurs="0" maxOccurs="unbounded">
+     <xs:element name="field" type="q:ctSortdField"/>
+    </xs:sequence>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctRendition">
+  <xs:complexContent>
+   <xs:extension base="q:hashLike">
+    <xs:sequence>
+     <xs:element name="xsl" type="q:ctXsl"/>
+     <xs:element name="highlight" type="xs:boolean"/>
+     <xs:element name="output-format" type="q:ctOutputFormat"/>
+     <xs:element name="view" type="xs:anyURI" minOccurs="0"/>
+    </xs:sequence>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctXsl">
+  <xs:simpleContent>
+   <xs:extension base="xs:anyURI"/>
+  </xs:simpleContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctOutputFormat">
+  <xs:simpleContent>
+   <xs:extension base="q:stOutputFormat"/>
+  </xs:simpleContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:simpleType name="stOutputFormat">
+  <xs:restriction base="xs:string">
+   <xs:enumeration value="html"/>
+   <xs:enumeration value="xml"/>
+   <xs:enumeration value="json"/>
+  </xs:restriction>
+ </xs:simpleType>
+ <!--  -->
+ <xs:simpleType name="stSortOrder">
+  <xs:restriction base="xs:string">
+   <xs:enumeration value="ascending"/>
+   <xs:enumeration value="descending"/>
+  </xs:restriction>
+ </xs:simpleType>
+ <!--  -->
+ <xs:complexType name="ctNGramFunction">
+  <xs:simpleContent>
+   <xs:extension base="q:stNGramFunction"/>
+  </xs:simpleContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:simpleType name="stNGramFunction">
+  <xs:restriction base="xs:string">
+   <xs:enumeration value="contains"/>
+   <xs:enumeration value="starts-with"/>
+   <xs:enumeration value="ends-with"/>
+   <xs:enumeration value="wildcard-contains"/>
+  </xs:restriction>
+ </xs:simpleType>
+</xs:schema>

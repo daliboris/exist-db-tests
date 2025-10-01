@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" 
+ elementFormDefault="qualified" 
+ targetNamespace="https://www.daliboris.cz/ns/exist-db/xquery/data">
+ 
+ <xs:simpleType name="stParameterType">
+  <xs:union memberTypes="xs:token">
+   <xs:simpleType>
+    <xs:restriction base="xs:token">
+     <xs:enumeration value="string"/>
+     <xs:enumeration value="integer"/>
+     <xs:enumeration value="function"/>
+     <xs:enumeration value="date"/>
+     <xs:enumeration value="dateTime"/>
+     <xs:enumeration value="time"/>
+    </xs:restriction>
+   </xs:simpleType>
+  </xs:union>
+ </xs:simpleType>
+ 
+ <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods -->
+ <xs:simpleType name="stMethod">
+  <xs:restriction base="xs:token">
+   <xs:enumeration value="get"/>
+   <xs:enumeration value="post"/>
+   <xs:enumeration value="put"/>
+   <xs:enumeration value="delete"/>
+   <xs:enumeration value="patch"/>
+   <xs:enumeration value="head"/>
+   <xs:enumeration value="connect"/>
+   <xs:enumeration value="options"/>
+   <xs:enumeration value="trace"/>
+  </xs:restriction>
+ </xs:simpleType>
+ 
+</xs:schema>
