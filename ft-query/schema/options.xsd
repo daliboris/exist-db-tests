@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+ <xs:annotation>
+  <xs:documentation>
+   <div>
+    <p>Based on the eXist-db <a href="https://exist-db.org/exist/apps/doc/lucene#parameters">documentation</a> and <a href="https://github.com/eXist-db/exist/blob/develop/extensions/indexes/lucene/src/main/java/org/exist/xquery/modules/lucene/QueryOptions.java">source code</a>.</p>
+   </div>
+  </xs:documentation>
+ </xs:annotation>
+ <xs:element name="options" type="ctOptions"/>
+ <xs:complexType name="ctOptions" mixed="true">
+  <xs:sequence>
+   <xs:element name="query-analyzer-id" type="ctQueryAnalyzerId" minOccurs="0"/>
+   <xs:element name="default-operator" type="ctDefaultOperator" minOccurs="0"/>
+   <xs:element name="phrase-slop" type="ctPhraseSlop" minOccurs="0"/>
+   <xs:element name="leading-wildcard" type="ctLeadingWildcard" minOccurs="0"/>
+   <xs:element name="filter-rewrite" type="ctFilterRewrite" minOccurs="0"/>
+   <xs:element name="lowercase-expanded-terms" type="ctLowercaseExpandedTerms" minOccurs="0"/>
+  </xs:sequence>
+ </xs:complexType>
+ <xs:complexType name="ctQueryAnalyzerId">
+  <xs:annotation>
+   <xs:documentation> Explicitly specifies the analyzer that should be used to process that particular query. The value provided should match the <code>id</code> attribute of an analyzer defined in <code>collection.xconf</code>. </xs:documentation>
+  </xs:annotation>
+  <xs:simpleContent>
+   <xs:extension base="xs:string"/>
+  </xs:simpleContent>
+ </xs:complexType>
+ <xs:complexType name="ctDefaultOperator">
+  <xs:annotation>
+   <xs:documentation>
+    <div>
+    <p>The default operator with which multiple terms will be combined.</p>
+     <p>Allowed values: <code>or</code> , <code>and</code>.</p>
+    </div>
+   </xs:documentation>
+  </xs:annotation>
+  <xs:simpleContent>
+   <xs:extension base="stBooleanOperator"/>
+  </xs:simpleContent>
+ </xs:complexType>
+ <xs:complexType name="ctPhraseSlop">
+  <xs:annotation>
+   <xs:documentation>
+    <div>
+     <p>Sets the default slop for phrases.</p> 
+    <p>If <code>0</code>, then exact phrase matches are required.</p> 
+    <p>Default value is <code>0</code>.</p>
+    </div>
+   </xs:documentation>
+  </xs:annotation>
+  <xs:simpleContent>
+   <xs:extension base="xs:integer"/>
+  </xs:simpleContent>
+ </xs:complexType>
+ <xs:complexType name="ctLeadingWildcard">
+  <xs:annotation>
+   <xs:documentation>
+    <ul>
+     <li>When set to <code>yes</code>, <code>*</code> or <code>?</code> are allowed as the first character of a <code>prefix</code> or <code>wildcard</code> element. </li>
+    </ul>
+    <p>Note that this can produce very slow queries on big indexes. </p>
+    </xs:documentation>
+  </xs:annotation>
+  <xs:simpleContent>
+   <xs:extension base="stBooleanValue"/>
+  </xs:simpleContent>
+ </xs:complexType>
+ <xs:complexType name="ctFilterRewrite">
+  <xs:annotation>
+   <xs:documentation> 
+    <div>
+     <p>Controls how terms are expanded for <code>wildcard</code> or regular expression (<code>regex</code>) searches.</p>
+     <ul>
+      <li>If set to <code>yes</code>, Lucene will use a filter to pre-process matching terms.</li>
+      <li>If set to <code>no</code>, all matching terms will be added to a single boolean query which is then executed.</li>
+     </ul>
+   </div> 
+   </xs:documentation>
+  </xs:annotation>
+  <xs:simpleContent>
+   <xs:extension base="stBooleanValue"/>
+  </xs:simpleContent>
+ </xs:complexType>
+ <xs:complexType name="ctLowercaseExpandedTerms">
+  <xs:annotation>
+   <xs:documentation>
+    <div>
+     <p>An option used to set whether the terms in wildcard, prefix, fuzzy, or range queries should be automatically lower-cased or left in their original case.</p> 
+     <p>When set to <code>yes</code>, query terms are lower-cased (i.e., as if <code>fn:lower-case()</code> were applied to the query string).</p> 
+     <p>Default value is <code>no</code>.</p>
+    </div>
+   </xs:documentation>
+  </xs:annotation>
+  <xs:simpleContent>
+   <xs:extension base="stBooleanValue"/>
+  </xs:simpleContent>
+ </xs:complexType>
+ <xs:simpleType name="stBooleanOperator">
+  <xs:annotation>
+   <xs:documentation>
+    <div>
+     <p>Boolean operator between conditions.</p>
+     <p>Allowed values: <code>and</code>, <code>or</code></p>
+    </div>
+   </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:string">
+   <xs:enumeration value="and"/>
+   <xs:enumeration value="or"/>
+  </xs:restriction>
+ </xs:simpleType>
+ <xs:simpleType name="stBooleanValue">
+  <xs:annotation>
+   <xs:documentation>
+    <div>
+     <p>Boolean value.</p>
+     <p>Allowed values: <code>yes</code>, <code>no</code></p>
+    </div>
+   </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:string">
+   <xs:enumeration value="yes"/>
+   <xs:enumeration value="no"/>
+  </xs:restriction>
+ </xs:simpleType>
+</xs:schema>

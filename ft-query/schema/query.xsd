@@ -1,196 +1,366 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" targetNamespace="https://www.daliboris.cz/ns/exist-db/xquery/search#query" xmlns:q="https://www.daliboris.cz/ns/exist-db/xquery/search#query" xmlns:d="https://www.daliboris.cz/ns/exist-db/xquery/data">
- <xs:import schemaLocation="query-options.xsd"/>
- <xs:import schemaLocation="data.xsd" namespace="https://www.daliboris.cz/ns/exist-db/xquery/data"/>
- <xs:element name="query" type="q:ctQuerying"/>
- <xs:complexType name="ctQuerying">
-  <xs:sequence>
-   <xs:choice>
-    <xs:element name="fulltext" type="q:ctFulltext" minOccurs="1"/>
-    <xs:element name="ngram" type="q:ctNgram" minOccurs="1"/>
-   </xs:choice>
-   <xs:element name="facets" type="q:ctFacets" minOccurs="0"/>
-   <xs:element name="fields" type="q:ctFields" minOccurs="0"/>
-   <xs:element name="sorting" type="q:ctSorting" minOccurs="0"/>
-   <xs:element name="pagination" type="q:ctPagination" minOccurs="1"/>
-   <xs:element name="rendition" type="q:ctRendition" minOccurs="1"/>
-  </xs:sequence>
-  <xs:attribute name="format"/>
- </xs:complexType>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
+ <xs:annotation>
+  <xs:documentation>
+   <div>
+    <p>Based on the eXist-db <a href="https://exist-db.org/exist/apps/doc/lucene.xml">documentation</a> and <a href="https://github.com/eXist-db/exist">source code</a>, especially <a href="https://github.com/eXist-db/exist/blob/develop/extensions/indexes/lucene/src/main/java/org/exist/indexing/lucene/XMLToQuery.java">XMLToQuery.java</a> and related classes.</p>
+    <p>For examples see also a <a href="https://github.com/eXist-db/exist/blob/develop/extensions/indexes/lucene/src/test/xquery/lucene/queries.xml">test</a>.</p>
+   </div>
+  </xs:documentation>
+ </xs:annotation>
+ <xs:element name="query" type="ctQuery" abstract="true"/>
  <!--  -->
- <xs:complexType name="ctFulltext">
-  <xs:complexContent>
-   <xs:extension base="q:hashLike">
-    <xs:sequence>
-     <xs:element ref="query"/>
-     <xs:element ref="options"/>
-    </xs:sequence>
-   </xs:extension>
-  </xs:complexContent>
- </xs:complexType>
+ <xs:complexType name="ctQuery" abstract="true" />
  <!--  -->
- <xs:complexType name="ctNgram">
+ <xs:complexType name="xml">
   <xs:complexContent>
-   <xs:extension base="q:hashLike">
-    <xs:sequence maxOccurs="unbounded">
-     <xs:element name="query" type="xs:string"/>
-     <xs:element name="function" type="q:ctNGramFunction"/>
-    </xs:sequence>
-   </xs:extension>
-  </xs:complexContent>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="ctFacets">
-  <xs:complexContent>
-   <xs:extension base="q:hashLike">
+   <xs:extension base="ctQuery">
     <xs:sequence minOccurs="0" maxOccurs="unbounded">
-     <xs:element name="facet" type="q:ctFacet"/>
+     <xs:element name="term" type="ctTerm" minOccurs="0"/>
+     <xs:element name="wildcard" type="ctWildcard" minOccurs="0"/>
+     <xs:element name="prefix" type="ctPrefix" minOccurs="0"/>
+     <xs:element name="fuzzy" type="ctFuzzy" minOccurs="0"/>
+     <xs:element name="bool" type="ctBool" minOccurs="0"/>
+     <xs:element name="phrase" type="ctPhrase" minOccurs="0"/>
+     <xs:element name="near" type="ctNear" minOccurs="0"/>
+     <xs:element name="regex" type="ctRegex" minOccurs="0"/>
     </xs:sequence>
    </xs:extension>
   </xs:complexContent>
  </xs:complexType>
  <!--  -->
- <xs:complexType name="hashLike">
-  <xs:attribute name="hash" type="xs:string" use="required"/>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="ctFacet">
-  <xs:sequence maxOccurs="unbounded">
-   <xs:element name="value" type="q:ctAbstractValue"/>
-  </xs:sequence>
-  <xs:attribute name="name" type="xs:token" use="required"/>
-  <xs:attribute name="type" type="d:stParameterType"/>
-  <xs:attribute name="has-hierarchy" type="xs:boolean"/>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="ctAbstractValue" abstract="true">
-  <xs:attribute name="text" type="xs:string"/>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="simple">
+ <xs:complexType name="lucene">
   <xs:complexContent mixed="true">
-   <xs:extension base="q:ctAbstractValue"/>
+   <xs:extension base="ctQuery" />
   </xs:complexContent>
  </xs:complexType>
  <!--  -->
- <xs:complexType name="hierarchical">
-  <xs:complexContent>
-   <xs:extension base="q:ctAbstractValue">
-    <xs:sequence>
-     <xs:element name="value" type="q:ctAbstractValue"/>
-    </xs:sequence>
-   </xs:extension>
-  </xs:complexContent>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="ctFields">
-  <xs:complexContent>
-   <xs:extension base="q:hashLike">
-    <xs:sequence>
-     <xs:element name="field" type="q:ctField"/>
-    </xs:sequence>
-   </xs:extension>
-  </xs:complexContent>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="ctField">
-  <xs:attribute name="name" type="xs:token"/>
-  <xs:attribute name="type" type="d:stParameterType"/>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="ctSortdField">
-  <xs:complexContent>
-   <xs:extension base="q:ctField">
-    <xs:attribute name="order" type="q:stSortOrder"/>
-   </xs:extension>
-  </xs:complexContent>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="ctPagination">
-  <xs:complexContent>
-   <xs:extension base="q:hashLike">
-    <xs:sequence>
-     <xs:element name="start-page" type="q:ctPage"/>
-     <xs:element name="per-page" type="q:ctPage"/>
-    </xs:sequence>
-   </xs:extension>
-  </xs:complexContent>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="ctPage">
+ <xs:complexType name="ctBoostable">
+  <xs:annotation>
+   <xs:documentation xml:lang="en">
+    <div>
+     <p>All elements in a query may have an optional boost parameter (float). The score of the nodes matching the corresponding query part will be multiplied by this factor.</p>
+    </div>
+   </xs:documentation>
+  </xs:annotation>
   <xs:simpleContent>
-   <xs:extension base="q:stPage"/>
+   <xs:extension base="stStringContent">
+    <xs:attribute name="boost" type="staBoost"/>
+   </xs:extension>
   </xs:simpleContent>
  </xs:complexType>
  <!--  -->
- <xs:simpleType name="stPage">
+ <xs:complexType name="ctTermLike">
+  <xs:annotation>
+   <xs:documentation>
+    <div>An abstract type that behaves like the term in the query.</div>
+   </xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+   <xs:extension base="ctBoostable">
+    <xs:attribute name="field" type="staField"/>
+    <xs:attribute name="occur" type="staOccur"/>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctExpandableLike">
+  <xs:annotation>
+   <xs:documentation>
+    <div>An abstract type that behaves like a term that can be expanded and an rewrite filter can be applied to it.</div>
+   </xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+   <xs:extension base="ctTermLike">
+    <xs:attribute name="filter-rewrite" type="stvFilterRewriteValue"/>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctTerm">
+  <xs:annotation>
+   <xs:documentation>
+    Defines a single term to be searched in the index. 
+    If the root query element contains a sequence of term elements, wrap them in <code>bool/</code> and they will be combined as in a boolean "or" query.
+   </xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+   <xs:extension base="ctTermLike"/>
+  </xs:complexContent>
+ </xs:complexType>
+ <xs:complexType name="ctPrefix">
+  <xs:annotation>
+   <xs:documentation>
+    Matches documents containing terms with a specified prefix.
+   </xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+   <xs:extension base="ctExpandableLike"/>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctFuzzy">
+  <xs:annotation>
+   <xs:documentation>
+    <div>
+     <p>Will match terms with an edit distance of at most @max-edit to the term.</p>
+     <p>NOTE: terms of length 1 or 2 will sometimes not match because of how the scaled
+      distance between two terms is computed.  For a term to match, the edit distance between
+      the terms must be less than the minimum length term (either the input term, or
+      the candidate term).  For example, FuzzyQuery on term "abcd" with maxEdits=2 will
+      not match an indexed term "ab", and FuzzyQuery on term "a" with maxEdits=2 will not
+      match an indexed term "abc".</p>
+     <p>The similarity measurement is based on the Damerau-Levenshtein (optimal string alignment) algorithm.</p>
+    </div>
+    
+   </xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+   <xs:extension base="ctBoostable">
+    <xs:attribute name="max-edits" type="staMaxEdits"/>
+    <xs:attribute name="field" type="staField"/>
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctWildcard">
+  <xs:annotation>
+   <xs:documentation>
+    A string with a * wildcard in it. 
+    This will be matched against the terms of a document. 
+    Can be used instead of a <code>term/</code> element.
+   </xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+   <xs:extension base="ctExpandableLike"/>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctRegex">
+  <xs:annotation>
+   <xs:documentation xml:lang="en">
+    <div>
+     <p>A regular expression which will be matched against the terms of a document.</p>
+     <p>Can be used instead of a <code>term</code> element.</p>
+     <p>Regular expression syntax is described in the Lucence's <a href="https://lucene.apache.org/core/4_10_4/core/org/apache/lucene/util/automaton/RegExp.html">RegEx</a> help page.</p>
+    </div>
+   </xs:documentation>
+  </xs:annotation>
+  <xs:complexContent>
+   <xs:extension base="ctExpandableLike"/>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctBool">
+  <xs:annotation>
+   <xs:documentation xml:lang="en">
+    <div>
+     <p>Constructs a boolean query from its children.</p>
+     <p>Each child element may have an occurrence indicator, which could be either must, should or not.</p>
+     <p>If the root <code>query</code> element contains a sequence of term elements, 
+      wrap them in <code>bool</code> and they will be combined as in a boolean <code>or</code> query.</p>
+     <p>If all terms in the wrap <code>bool</code> elment contain <code>@occur</code> attribute with value <code>must</code> it behaves boolean <code>and</code> query.</p>
+    </div>
+   </xs:documentation>
+  </xs:annotation>
+  <xs:choice minOccurs="0" maxOccurs="unbounded">
+   <xs:element name="term" type="ctTerm" minOccurs="0"/>
+   <xs:element name="wildcard" type="ctWildcard" minOccurs="0"/>
+   <xs:element name="phrase" type="ctPhrase" minOccurs="0"/>
+   <xs:element name="near" type="ctNear" minOccurs="0"/>
+   <xs:element name="regex" type="ctRegex" minOccurs="0"/>
+   <xs:element name="prefix" type="ctPrefix" minOccurs="0"/>
+   <xs:element name="bool" type="ctBool" minOccurs="0"/>
+  </xs:choice>
+  <xs:attribute name="boost" type="staBoost"/>
+  <xs:attribute name="min" type="staMin"/>
+  <xs:attribute name="field" type="staField"/>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctPhrase">
+  <xs:annotation>
+   <xs:documentation>
+    Searches for a group of terms occurring in the correct order. 
+    The element may either contain explicit <code>term</code> elements or text content.
+    Text will be automatically tokenized into a sequence of terms.
+   </xs:documentation>
+  </xs:annotation>
+  <xs:choice>
+   <xs:element name="term" type="ctTerm" minOccurs="0" maxOccurs="unbounded"/>
+   <!-- TODO -->
+  </xs:choice>
+  <xs:attribute name="boost" type="staBoost"/>
+  <xs:attribute name="slop" type="staSlop"/>
+  <xs:attribute name="field" type="staField"/>
+  <xs:attribute name="occur" type="staOccur"/>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="ctNear" abstract="true">
+  <xs:annotation>
+   <xs:documentation>
+    <code>near</code> is a powerful alternative to <code>phrase</code> and one of the features not available through the standard Lucene query parser.
+    If the element has text content only, it will be tokenized into terms and the expression behaves like <code>phrase</code>.
+    Otherwise it may contain any combination of <code>term</code>, <code>first</code> and nested <code>near</code> elements. 
+    This makes it possible to search for two sequences of terms which are within a specific distance.
+   </xs:documentation>
+  </xs:annotation>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="near-xml">
+  <xs:complexContent>
+   <xs:extension base="ctNear">
+    <xs:choice>
+     <xs:element name="term" type="ctTerm" minOccurs="0" maxOccurs="unbounded"/>
+     <xs:element name="first" type="ctFirst" minOccurs="0" maxOccurs="unbounded"/>
+     <xs:element name="near" type="ctNear" minOccurs="0" maxOccurs="unbounded"/>
+     <!-- TODO -->
+     <!--<xs:element name="regex" type="ctRegex" minOccurs="0" maxOccurs="unbounded"/>-->
+    </xs:choice>
+    <xs:attribute name="boost" type="staBoost"/>
+    <xs:attribute name="ordered" type="stvBooleanValue"/>
+    <xs:attribute name="field" type="staField"/>
+    <xs:attribute name="occur" type="staOccur"/>
+    <xs:attribute name="slop" type="staSlop" />
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+ <xs:complexType name="near-text">
+  <xs:complexContent mixed="true">
+   <xs:extension base="ctNear">
+    <xs:attribute name="boost" type="staBoost"/>
+    <xs:attribute name="ordered" type="stvBooleanValue"/>
+    <xs:attribute name="field" type="staField"/>
+    <xs:attribute name="occur" type="staOccur"/>
+    <xs:attribute name="slop" type="staSlop" />
+   </xs:extension>
+  </xs:complexContent>
+ </xs:complexType>
+ <!--  -->
+
+ <!--  -->
+ <xs:complexType name="ctFirst">
+  <xs:annotation>
+   <xs:documentation>
+    Element <code>first</code> matches a span against the start of the text in the context node.
+    It takes an optional attribute @end to specify the maximum distance from the start of the text.
+    The content of <code>first</code> can be text, a <code>term</code> or <code>near</code>.
+   </xs:documentation>
+  </xs:annotation>
+  <xs:choice>
+   <xs:element name="term" type="ctTerm" minOccurs="0" maxOccurs="unbounded"/>
+   <xs:element name="near" type="ctNear" minOccurs="0" maxOccurs="unbounded"/>
+   <!-- TODO -->
+  </xs:choice>
+  <xs:attribute name="boost" type="staBoost"/>
+  <xs:attribute name="slop" type="staSlop"/>
+  <xs:attribute name="ordered" type="stvBooleanValue"/>
+  <xs:attribute name="end" type="staEnd"/>
+  <xs:attribute name="field" type="staField"/>
+ </xs:complexType>
+ <!--  -->
+ <xs:simpleType name="stStringContent">
+  <xs:restriction base="xs:string"/>
+ </xs:simpleType>
+ <!--  -->
+ <xs:simpleType name="staBoost">
+  <xs:annotation>
+   <xs:documentation>
+    All elements in a query may have an optional boost parameter (float). 
+    The score of the nodes matching the corresponding query part will be multiplied by this factor.
+   </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:float"/>
+ </xs:simpleType>
+ <!--  -->
+ <xs:simpleType name="staMin">
+  <xs:annotation>
+   <xs:documentation>
+    To optimize performance of the <code>bool/</code> search you can specify a minimum number of matches to prevent needless disjunctive searches, using the min attribute.
+    It's valid only if the @occur attribute of the nested <code>term/</code> and other elements is missing or has 'should' value.
+   </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:integer"/>
+ </xs:simpleType>
+ <!--  -->
+ <xs:simpleType name="staField">
+  <xs:annotation>
+   <xs:documentation>
+    Name of the field to be queried.
+   </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:token"/>
+ </xs:simpleType>
+ <!--  -->
+ <xs:simpleType name="staSlop">
+  <xs:annotation>
+   <xs:documentation>
+    The attribute @slop can be used for a proximity search: 
+    Lucene will try to find terms which are within the specified distance.
+   </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:integer"/>
+ </xs:simpleType>
+ <!--  -->
+ <xs:simpleType name="staEnd">
+  <xs:annotation>
+   <xs:documentation>Specify the maximum distance from the start of the text</xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="xs:integer"/>
+ </xs:simpleType>
+ <!--  -->
+ <xs:simpleType name="staMaxEdits">
   <xs:restriction base="xs:integer">
-   <xs:minInclusive value="1"/>
+   <xs:maxInclusive value="2"/>
+   <xs:minInclusive value="0"/>
   </xs:restriction>
  </xs:simpleType>
  <!--  -->
- <xs:complexType name="ctSorting">
-  <xs:complexContent>
-   <xs:extension base="q:hashLike">
-    <xs:sequence minOccurs="0" maxOccurs="unbounded">
-     <xs:element name="field" type="q:ctSortdField"/>
-    </xs:sequence>
-   </xs:extension>
-  </xs:complexContent>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="ctRendition">
-  <xs:complexContent>
-   <xs:extension base="q:hashLike">
-    <xs:sequence>
-     <xs:element name="xsl" type="q:ctXsl"/>
-     <xs:element name="highlight" type="xs:boolean"/>
-     <xs:element name="output-format" type="q:ctOutputFormat"/>
-     <xs:element name="view" type="xs:anyURI" minOccurs="0"/>
-    </xs:sequence>
-   </xs:extension>
-  </xs:complexContent>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="ctXsl">
-  <xs:simpleContent>
-   <xs:extension base="xs:anyURI"/>
-  </xs:simpleContent>
- </xs:complexType>
- <!--  -->
- <xs:complexType name="ctOutputFormat">
-  <xs:simpleContent>
-   <xs:extension base="q:stOutputFormat"/>
-  </xs:simpleContent>
- </xs:complexType>
- <!--  -->
- <xs:simpleType name="stOutputFormat">
+ <xs:simpleType name="stvBooleanValue">
   <xs:restriction base="xs:string">
-   <xs:enumeration value="html"/>
-   <xs:enumeration value="xml"/>
-   <xs:enumeration value="json"/>
+   <xs:enumeration value="yes"/>
+   <xs:enumeration value="no"/>
   </xs:restriction>
  </xs:simpleType>
  <!--  -->
- <xs:simpleType name="stSortOrder">
-  <xs:restriction base="xs:string">
-   <xs:enumeration value="ascending"/>
-   <xs:enumeration value="descending"/>
-  </xs:restriction>
+ <xs:simpleType name="stvFilterRewriteValue">
+  <xs:annotation>
+   <xs:documentation>
+    <div>
+     <p>Controls how terms are expanded for wildcard or regular expression searches.</p> 
+     <ul>
+      <li>If set to <code>yes</code>, Lucene will use a filter to pre-process matching terms.</li>
+      <li>If set to <code>no</code>, all matching terms will be added to a single boolean query which is then executed.</li>
+     </ul> 
+     <p>This may generate a "too many clauses" exception when applied to large data sets. Setting <code>@filter-rewrite</code> to <code>yes</code> avoids those issues.</p>
+    </div>
+   </xs:documentation>
+  </xs:annotation>
+  <xs:restriction base="stvBooleanValue"/>
  </xs:simpleType>
  <!--  -->
- <xs:complexType name="ctNGramFunction">
-  <xs:simpleContent>
-   <xs:extension base="q:stNGramFunction"/>
-  </xs:simpleContent>
- </xs:complexType>
- <!--  -->
- <xs:simpleType name="stNGramFunction">
+ <xs:simpleType name="staOccur">
   <xs:restriction base="xs:string">
-   <xs:enumeration value="contains"/>
-   <xs:enumeration value="starts-with"/>
-   <xs:enumeration value="ends-with"/>
-   <xs:enumeration value="wildcard-contains"/>
+   <xs:enumeration value="must">
+    <xs:annotation>
+     <xs:documentation>this part of the query must be matched</xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="should">
+    <xs:annotation>
+     <xs:documentation> this part of the query should be matched, but doesn't need to If the <code>bool</code> query does not contain a "<code>must</code>" clause, one or more "<code>shuld</code>" clauses must match the document for the query to match. </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
+   <xs:enumeration value="not">
+    <xs:annotation>
+     <xs:documentation xml:lang="en"> this part of the query must not be matched Use this operator for clauses that must not appear in the matching documents. It is not possible to search for queries that only consist of a "<code>not</code>" clause. </xs:documentation>
+     <xs:documentation xml:lang="cs">
+      <div>
+       <p>Dokumenty splňující tuto podmínku se ve výsledcích nesmí objevit.</p>
+      </div>
+     </xs:documentation>
+    </xs:annotation>
+   </xs:enumeration>
   </xs:restriction>
  </xs:simpleType>
 </xs:schema>
