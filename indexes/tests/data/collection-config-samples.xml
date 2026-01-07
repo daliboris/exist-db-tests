@@ -1,0 +1,639 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<t:items xmlns:t="http://exist-db.org/xquery/tests/test" xmlns="http://exist-db.org/collection-config/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <t:items id="1" description="collection">
+    <t:item id="1" description="empty collection" invalid="true" skip="true">
+      <collection />
+    </t:item>
+    <t:item id="2" description="empty index">
+      <collection>
+        <index />
+      </collection>
+    </t:item>
+    <t:item id="3" description="empty lucene">
+      <collection>
+        <index>
+          <lucene />
+        </index>
+      </collection>
+    </t:item>
+    <t:item id="4" description="empty range">
+      <collection>
+        <index>
+          <range />
+        </index>
+      </collection>
+    </t:item>    
+  </t:items>
+  <t:items id="2" description="lucene">
+    <t:items id="2.1" description="lucene top level">
+      <t:item id="2.1.1" description="lucene, diacritics=no">
+        <collection>
+          <index>
+            <lucene diacritics="no">
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.1.2" description="lucene, analyzer">
+        <collection>
+          <index>
+            <lucene>
+              <analyzer id="nodiacritics" class="org.exist.indexing.lucene.analyzers.NoDiacriticsStandardAnalyzer" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+    </t:items>
+    <t:items id="2.2" description="lucene, qname">
+      <t:item id="6" description="lucene, text on @qname, without field">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="6.1" description="lucene, text on @qname, without field, @index=no (make it sense?)">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" index="no" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="6.2" description="lucene, text on @qname, with implicit @field">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" field="p-field" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="6.3" description="lucene, text on @qname, with implicit @field @boost">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" field="p-field" boost="10.0" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="6.4" description="lucene, text on @qname, with implicit @field @index=no (make it sense?)">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" field="p-field" index="no" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="6.4" description="lucene, text on @qname, with implicit @field end explicit field (same name)" invalid="true" skip="true">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" field="p-field">
+                <field name="p-field" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="6.4.1" description="lucene, text on @qname, with implicit @field end explicit field (different names)">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" field="p-field">
+                <field name="p-field-explicit" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7" description="lucene, text on @qname, with explicit field">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p">
+                <field name="p-field" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.1" description="lucene, text on @qname, with explicit field, @expression">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p">
+                <field name="p-field" expression="substring-after(., 'a')" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>  
+      <t:item id="7.1.1" description="lucene, text on @qname, with explicit field, @type">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:num">
+                <field name="p-field" type="xs:integer"/>
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.1.2" description="lucene, text on @qname, with explicit field, @type, @binary">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:num">
+                <field name="p-field" type="xs:integer" binary="yes"/>
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.1.3" description="lucene, text on @qname, with explicit field, @type, @binary, @store (make it sense?)">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:num">
+                <field name="p-field" type="xs:integer" binary="yes" store="no" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.1.4" description="lucene, text on @qname, with explicit field, @boost">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:num" boost="10.0">
+                <field name="p-field" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.2" description="lucene, text on @qname: @index=no; with explicit field">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" index="no">
+                <field name="p-field" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.2.1" description="lucene, text on @qname: @index=no; with explicit field, @type">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" index="no">
+                <field name="p-field" type="xs:string" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.2.2" description="lucene, text on @qname: @index=no; with explicit field, @type, @binary">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" index="no">
+                <field name="p-field" type="xs:string" binary="yes" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.2.3" description="lucene, text on @qname: @index=no; with explicit field, @type, @binary, @store=no (make it sense?)">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" index="no">
+                <field name="p-field" type="xs:string" binary="yes" store="no" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.2.4" description="lucene, text on @qname: @index=no; with explicit field, @if, ">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:p" index="no">
+                <field name="p-field" if="@xml:lang='en'" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.3" description="lucene, analyzer, text on @qname: @analyzer">
+        <collection>
+          <index>
+            <lucene>
+              <analyzer id="nodiacritics" class="org.exist.indexing.lucene.analyzers.NoDiacriticsStandardAnalyzer" />
+              <text qname="tei:p" analyzer="nodiacritics" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.3.1" description="lucene, analyzer, text on @qname: @analyzer, implicit field">
+        <collection>
+          <index>
+            <lucene>
+              <analyzer id="nodiacritics" class="org.exist.indexing.lucene.analyzers.NoDiacriticsStandardAnalyzer" />
+              <text qname="tei:p" analyzer="nodiacritics" field="p-field" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="7.3.2" description="lucene, analyzer, text on @qname: @analyzer, explicit field">
+        <collection>
+          <index>
+            <lucene>
+              <analyzer id="nodiacritics" class="org.exist.indexing.lucene.analyzers.NoDiacriticsStandardAnalyzer" />
+              <text qname="tei:p" analyzer="nodiacritics">
+                <field name="p-field" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      
+    </t:items>
+    <t:items id="2.3" description="lucene, match">
+      <t:item id="2.3.1" description="lucene, text on @match, without field">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.1.1" description="lucene, text on @match, without field, @index=no (make it sense?)">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" index="no" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.1.2" description="lucene, text on @match, with implicit @field">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" field="p-field" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.1.3" description="lucene, text on @match, with implicit @field @boost">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" field="p-field" boost="10.0" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.1.4" description="lucene, text on @match, with implicit @field @index=no (make it sense?)">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" field="p-field" index="no" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.1.4" description="lucene, text on @match, with implicit @field end explicit field (same name)" skip="true" invalid="true">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" field="p-field">
+                <field name="p-field" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.1.4.1" description="lucene, text on @match, with implicit @field end explicit field (different names)">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" field="p-field">
+                <field name="p-field-explicit" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.2" description="lucene, text on @match, with explicit field">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p">
+                <field name="p-field" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.2.1" description="lucene, text on @match, with explicit field, @expression">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p">
+                <field name="p-field" expression="substring-after(., 'a')" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>  
+      <t:item id="2.3.2.1.1" description="lucene, text on @match, with explicit field, @type">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:num">
+                <field name="p-field" type="xs:integer"/>
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.2.1.2" description="lucene, text on @match, with explicit field, @type, @binary">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:num">
+                <field name="p-field" type="xs:integer" binary="yes"/>
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.2.1.3" description="lucene, text on @match, with explicit field, @type, @binary, @store (make it sense?)">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:num">
+                <field name="p-field" type="xs:integer" binary="yes" store="no" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.2.1.4" description="lucene, text on @match, with explicit field, @boost">
+        <collection>
+          <index>
+            <lucene>
+              <text qname="tei:num" boost="10.0">
+                <field name="p-field" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.2.2" description="lucene, text on @match: @index=no; with explicit field">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" index="no">
+                <field name="p-field" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.2.2.1" description="lucene, text on @match: @index=no; with explicit field, @type">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" index="no">
+                <field name="p-field" type="xs:string" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.2.2.2" description="lucene, text on @match: @index=no; with explicit field, @type, @binary">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" index="no">
+                <field name="p-field" type="xs:string" binary="yes" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.2.2.3" description="lucene, text on @match: @index=no; with explicit field, @type, @binary, @store=no (make it sense?)">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" index="no">
+                <field name="p-field" type="xs:string" binary="yes" store="no" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.2.2.4" description="lucene, text on @match: @index=no; with explicit field, @if, ">
+        <collection>
+          <index>
+            <lucene>
+              <text match="/tei:div/tei:p" index="no">
+                <field name="p-field" if="@xml:lang='en'" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.3" description="lucene, analyzer, text on @qname: @analyzer">
+        <collection>
+          <index>
+            <lucene>
+              <analyzer id="nodiacritics" class="org.exist.indexing.lucene.analyzers.NoDiacriticsStandardAnalyzer" />
+              <text match="/tei:div/tei:p" analyzer="nodiacritics" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.3.1" description="lucene, analyzer, text on @qname: @analyzer, implicit field">
+        <collection>
+          <index>
+            <lucene>
+              <analyzer id="nodiacritics" class="org.exist.indexing.lucene.analyzers.NoDiacriticsStandardAnalyzer" />
+              <text match="/tei:div/tei:p" analyzer="nodiacritics" field="p-field" />
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="2.3.3.2" description="lucene, analyzer, text on @qname: @analyzer, explicit field">
+        <collection>
+          <index>
+            <lucene>
+              <analyzer id="nodiacritics" class="org.exist.indexing.lucene.analyzers.NoDiacriticsStandardAnalyzer" />
+              <text match="/tei:div/tei:p" analyzer="nodiacritics">
+                <field name="p-field" />
+              </text>
+            </lucene>
+          </index>
+        </collection>
+      </t:item>
+    </t:items>
+  </t:items>
+  <t:items id="4" description="new-range">
+    <t:items id="4.1" description="new-range, create only">
+      <t:item id="4.1.1" description="new-range, create @qname">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p" />
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.2" description="new-range, create @qname, @type">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p" type="xs:string" />
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.3" description="new-range, create @qname, @type, @nested=no">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p" type="xs:string" nested="no" />
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.4" description="new-range, create @qname, @type, @nested=no">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p" type="xs:string" nested="no" />
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.5" description="new-range, create @qname, @type, @collation">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p" type="xs:string" collation="?lang=en-US&amp;strength=primary" />
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.6" description="new-range, create @qname, @type, @whitespace=normalize">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p" type="xs:string" whitespace="normalize" />
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.6.1" description="new-range, create @qname, @type, @whitespace=trim">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p" type="xs:string" whitespace="trim" />
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.7" description="new-range, create @qname, @type, @case=no">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p" type="xs:string" case="no" />
+            </range>
+          </index>
+        </collection>
+      </t:item>
+    </t:items>
+    <t:items id="4.2" description="new-range, fields">
+      <t:item id="4.1.1" description="new-range, create @qname; field">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p">
+                <field name="p-field" />
+              </create>
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.2" description="new-range, create @qname; field @type">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p">
+                <field name="p-field" type="xs:string" />
+              </create>
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.3" description="new-range, create @qname; field @type, @case=no">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p">
+                <field name="p-field" type="xs:string" case="no" />
+              </create>
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.4" description="new-range, create @qname; field @type, @nested=no">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p">
+                <field name="p-field" type="xs:string" nested="no" />
+              </create>
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.5" description="new-range, create @qname; field @type, @whitespace=normalize">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p">
+                <field name="p-field" type="xs:string" whitespace="normalize" />
+              </create>
+            </range>
+          </index>
+        </collection>
+      </t:item>
+      <t:item id="4.1.4" description="new-range, create @qname; field @type, @whitespace=trim">
+        <collection>
+          <index>
+            <range>
+              <create qname="tei:p">
+                <field name="p-field" type="xs:string" whitespace="trim" />
+              </create>
+            </range>
+          </index>
+        </collection>
+      </t:item>
+    </t:items>
+  </t:items>
+  <t:items id="5" description="old-range"></t:items>
+  <t:items id="6" description="n-grams"></t:items>
+  </t:items>
