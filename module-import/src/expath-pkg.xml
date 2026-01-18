@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://expath.org/ns/pkg" xmlns:pkg="http://expath.org/ns/pkg" spec="1.0" version="0.1" name="https://daliboris.cz/exist-db/test/module-import" abbrev="module-import">
+  <title>import-module: test library</title> 
+  <home>https://github.com/daliboris/eXist-db-tests</home>
+  <dependency processor="http://exist-db.org" semver-min="5.3.0"/>
+  
+  <xquery>
+    <namespace>https://daliboris.cz/exist-db/test/main-module</namespace>
+    <file>main-module.xqm</file>
+  </xquery>
+  
+  <xquery>
+    <namespace>https://daliboris.cz/exist-db/test/imported-module</namespace>
+    <file>imported-module.xqm</file>
+  </xquery>
+
+</package>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<meta xmlns="http://exist-db.org/xquery/repo">
+  <description>XQuery library for module import testing</description>
+  <author>Boris Lehečka</author>
+  <website>https://github.com/daliboris/eXist-db-tests</website>
+  <status>beta</status>
+  <license>GPLv3</license>
+  <copyright>true</copyright>
+  <type>library</type>
+<!--  <target>indexist-db</target>-->
+  <!--<prepare>pre-install.xql</prepare>-->
+  <!--<finish>post-install.xql</finish>-->
+  <permissions user="admin" password="" group="dba" mode="rw-rw-r--"/>
+  <changelog>
+    <change version="v0.1.0">
+      <ul xmlns="http://www.w3.org/1999/xhtml">
+        <li>initial version</li>
+      </ul>
+    </change>
+  </changelog>
+</meta>

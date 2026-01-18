@@ -1,0 +1,38 @@
+
+{
+    "servers": {
+        "localhost": {
+            "server": "http://localhost:8080/exist",
+            "user": "admin",
+            "password": "",
+            "root": "/db/system/repo/module-import-0.1"
+        }
+    },
+    "connectionOptions": {
+        "basic_auth": {
+            "user": "admin",
+            "pass": ""
+        },
+        "rejectUnauthorized": false,
+        "host": "localhost",
+        "port": 8080,
+        "protocol": "http:"
+    },
+    "sync": {
+        "server": "localhost",
+        "polling": true,
+        "interval": 500,
+        "ignore": [
+            ".existdb.json",
+            ".git/**",
+            ".vs/**",
+            ".vscode/**",
+            "etalon/**",
+            "build/**",
+            "proof-of-concept/**",
+            "schema/**",
+            "monex/**",
+            "local.*"
+        ]
+    }
+}
