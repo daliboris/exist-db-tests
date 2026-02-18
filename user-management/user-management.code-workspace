@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "src/without-script"
+		},
+		{
+			"path": "src/with-script"
+		},
+{
+			"path": "src/with-local-secrets"
+		},
+		{
+			"path": "src/install"
+		}
+	],
+	"settings": {}
+}

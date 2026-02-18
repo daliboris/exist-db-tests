@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?><meta xmlns="http://exist-db.org/xquery/repo">
+    <description>Users without install script</description>
+    <author>Boris Lehečka</author>
+    <website>https://jinntec.de</website>
+    <status>beta</status>
+    <license>GPLv3</license>
+    <copyright>true</copyright>
+    <type>library</type>
+    <target>users-without-script</target>
+    <!-- <prepare>pre-install.xql</prepare> -->
+    <!-- <finish>post-install.xql</finish> -->
+    <permissions user="boris" password="pwd" group="boris-group" mode="rw-rwxr--" />
+    <permissions user="lars" password="pwd" group="lars-group" mode="rw-rwxr--" />
+    <changelog>
+        <change version="0.1.0">
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>creates first user only</li>
+            </ul>
+        </change>
+    </changelog>
+</meta>

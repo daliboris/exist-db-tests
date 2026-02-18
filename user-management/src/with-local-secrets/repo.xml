@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><meta xmlns="http://exist-db.org/xquery/repo">
+    <description>Users with install script and local secrets</description>
+    <author>Boris Lehečka</author>
+    <website>https://jinntec.de</website>
+    <status>beta</status>
+    <license>GPLv3</license>
+    <copyright>true</copyright>
+    <type>library</type>
+    <target>users-with-local-secrets</target>
+    <!-- <prepare>pre-install.xql</prepare> -->
+    <finish>post-install.xql</finish><!-- used for creating additional users -->
+    
+   
+    <changelog>
+        <change version="0.2.0">
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>creates groups</li>
+                <li>creates multiple users beloging to multiple groups</li>
+            </ul>
+        </change>
+        
+        <change version="0.3.0">
+            <ul xmlns="http://www.w3.org/1999/xhtml">
+                <li>usernames and passwords in local.secret.xsl</li>
+            </ul>
+        </change>
+    </changelog>
+</meta>

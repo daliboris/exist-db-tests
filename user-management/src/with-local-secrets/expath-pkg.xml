@@ -1,0 +1,6 @@
+<package xmlns="http://expath.org/ns/pkg" spec="1.0" version="0.3.0"
+    name="https://jinntec.de/apps/users-with-local-secrets" abbrev="users-with-local-secrets">
+    <title>Users with local secrets and install script</title>
+    <home>https://jinntec.de/</home>
+    <dependency processor="http://exist-db.org" semver-min="5.3.0" />
+</package>

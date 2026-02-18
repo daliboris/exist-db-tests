@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="${package(abbrev)}" default="xar">
+    <xmlproperty file="expath-pkg.xml" />
+    <property name="project.version" value="${package(version)}" />
+    <property name="project.app" value="${package(abbrev)}" />
+    <property name="build" value="${basedir}/build" />
+    <property name="build.dir" value="build" />
+    <property name="app.build.dir" value="${build}/${project.app}-${project.version}" />
+    <property name="local.secrets.file" value="local.secrets.xsl" />
+
+    <target name="check-local.secrets">
+        <available file="${local.secrets.file}" property="local.secrets.exists" />
+    </target>
+
+    <target name="create-local.secrets-if-missing" depends="check-local.secrets"
+        unless="local.secrets.exists">
+        <echo file="${local.secrets.file}" append="false" encoding="UTF-8"><![CDATA[<xsl:stylesheet version="1.0"
+            xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+            xmlns="http://exist-db.org/xquery/repo">
+            
+            <!-- First user is automatically created during the installation process -->
+            <xsl:template name="permissions">
+            <permissions user="users-installer" mode="---------" group="install" description="User used for creating other groups and users"/>
+            </xsl:template>
+            
+            <!-- Groups-->
+            <permissions user="-" mode="---------" group="redaction" description="Redaction group" />
+            <permissions user="-" mode="---------" group="administration" description="Administration group" />
+            
+            <!-- Users -->
+            <permissions user="editor-only" password="pswd" group="tei"
+                        mode="rw-rwxr--" groups="redaction administration" full-name="Editor Only"
+                        description="Editor of the edition (and an admin)" />
+            <permissions user="annotator" password="pswd" group="tei"
+                        mode="rw-rwxr--" groups="annotation" full-name="Annotator User"
+                        description="Annotator of the edition" />
+
+</xsl:stylesheet>]]>
+        </echo>
+    </target>
+
+    <target name="clean">
+        <echo message="Deleting ${app.build.dir} directory" />
+        <delete dir="${app.build.dir}" />
+    </target>
+
+    <target name="prepare">
+        <mkdir dir="${build}" />
+        <mkdir dir="${app.build.dir}" />
+        <copy todir="${app.build.dir}">
+            <fileset dir="${basedir}">
+                <exclude name="${build.dir}" />
+                <exclude name="${build.dir}/**" />
+                <exclude name=".existdb.json" />
+                <exclude name="*.xstrc" />
+                <exclude name="local.*" />
+                <exclude name="*.build.properties" />
+                <exclude name=".github/**" />
+                <exclude name=".vs/**" />
+                <exclude name=".vscode/**" />
+                <exclude name="build.properties" />
+                <exclude name=".gitignore" />
+                <exclude name="*.code-workspace" />
+            </fileset>
+        </copy>
+    </target>
+
+
+    <target name="xar" depends="secrets.prepare">
+        <mkdir dir="${build.dir}" />
+        <zip basedir="${app.build.dir}"
+            destfile="${build.dir}/${project.app}-${project.version}.xar" />
+        <copy file="${build.dir}/${project.app}-${project.version}.xar"
+            tofile="${build.dir}/${project.app}.xar" overwrite="true" />
+    </target>
+
+    <target name="secrets.prepare" depends="prepare, create-local.secrets-if-missing">
+        <xslt style="secrets.xsl" in="repo.xml" out="${app.build.dir}/repo.xml" force="true" >
+            <param name="phase" expression="prepare" />
+        </xslt>
+    </target>
+
+    <target name="repo.clean">
+        <move file="local.repo.xml" tofile="repo.xml" overwrite="true" />
+    </target>
+
+</project>

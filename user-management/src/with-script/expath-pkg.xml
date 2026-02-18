@@ -1,0 +1,6 @@
+<package xmlns="http://expath.org/ns/pkg" spec="1.0" version="0.2.0"
+    name="https://jinntec.de/apps/users-with-script" abbrev="users-with-script">
+    <title>Users with install script</title>
+    <home>https://jinntec.de/</home>
+    <dependency processor="http://exist-db.org" semver-min="5.3.0" />
+</package>
